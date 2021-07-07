@@ -9,6 +9,6 @@ import service.security.auth.entity.RoleEntity;
 public interface RoleRepository extends CrudRepository<RoleEntity, Long> {
 	
 	RoleEntity findByRole (String role);
-	RoleEntity findByRolePublicId(String publicId);
+	RoleEntity findByPublicId(String publicId);
 
 }

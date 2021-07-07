@@ -17,9 +17,6 @@ public class RoleEntity extends BaseEntity {
 
 	private static final long serialVersionUID = -438765684336800137L;
 	
-    @Column(name = "rolePublicId", length = 255,nullable = false,unique = true)
-    private String rolePublicId;
-	
     @Column(name = "role", length = 50,nullable = false,unique = true)
     private String role;
     
@@ -37,16 +34,6 @@ public class RoleEntity extends BaseEntity {
     ) 
     
     private Set<PermissionEntity> permissions;
-
-
-	public String getRolePublicId() {
-		return rolePublicId;
-	}
-
-
-	public void setRolePublicId(String rolePublicId) {
-		this.rolePublicId = rolePublicId;
-	}
 
 
 	public String getRole() {
@@ -97,7 +84,6 @@ public class RoleEntity extends BaseEntity {
 		result = prime * result + ((enabled == null) ? 0 : enabled.hashCode());
 		result = prime * result + ((permissions == null) ? 0 : permissions.hashCode());
 		result = prime * result + ((role == null) ? 0 : role.hashCode());
-		result = prime * result + ((rolePublicId == null) ? 0 : rolePublicId.hashCode());
 		return result;
 	}
 
@@ -131,28 +117,22 @@ public class RoleEntity extends BaseEntity {
 				return false;
 		} else if (!role.equals(other.role))
 			return false;
-		if (rolePublicId == null) {
-			if (other.rolePublicId != null)
-				return false;
-		} else if (!rolePublicId.equals(other.rolePublicId))
-			return false;
 		return true;
 	}
 
 
 	@Override
 	public String toString() {
-		return "RoleEntity [rolePublicId=" + rolePublicId + ", role=" + role + ", enabled=" + enabled + ", description="
-				+ description + ", permissions=" + permissions + "]";
+		return "RoleEntity [role=" + role + ", enabled=" + enabled + ", description=" + description + ", permissions="
+				+ permissions + "]";
 	}
 
 
 	public RoleEntity(Long id, String publicId, String description, String createdBy, Date created, String modifiedBy,
-			Date modified, Boolean deleted, String deletedBy, Boolean enabled, Long version, String rolePublicId,
-			String role, Boolean enabled2, String description2, Set<PermissionEntity> permissions) {
+			Date modified, Boolean deleted, String deletedBy, Boolean enabled, Long version, String role,
+			Boolean enabled2, String description2, Set<PermissionEntity> permissions) {
 		super(id, publicId, description, createdBy, created, modifiedBy, modified, deleted, deletedBy, enabled,
 				version);
-		this.rolePublicId = rolePublicId;
 		this.role = role;
 		enabled = enabled2;
 		description = description2;
@@ -162,14 +142,18 @@ public class RoleEntity extends BaseEntity {
 
 	public RoleEntity() {
 		super();
+
 	}
 
 
 	public RoleEntity(Long id, String publicId, String description, String createdBy, Date created, String modifiedBy,
 			Date modified, Boolean deleted, String deletedBy, Boolean enabled, Long version) {
 		super(id, publicId, description, createdBy, created, modifiedBy, modified, deleted, deletedBy, enabled, version);
-	}	
-	
+
+	}
+
+
+
 	
 	
 	

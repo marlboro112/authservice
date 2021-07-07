@@ -40,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests().antMatchers()
 				.permitAll().anyRequest().authenticated().and().addFilter(getAuthenticationFilter())
-				.addFilter(new AuthorizationFilter(authenticationManager())).sessionManagement()
+				.addFilter(new AuthorizationFilter(authenticationManager(),getApplicationContext())).sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 		http.cors();
@@ -65,7 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	public AuthenticationFilter getAuthenticationFilter() throws Exception {
-		final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager());
+		final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager(),getApplicationContext());
 		filter.setFilterProcessesUrl("/users/login");
 
 		return filter;

@@ -8,13 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-
-
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwsHeader;
@@ -22,21 +21,25 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SigningKeyResolverAdapter;
 import service.security.auth.common.SecurityConstants;
 import service.security.auth.dto.UserDTO;
-import service.security.auth.service.UserService;
+import service.security.auth.service.UserServiceImpl;
 
 
 
 public class AuthorizationFilter extends BasicAuthenticationFilter {
-
-	public AuthorizationFilter(AuthenticationManager authenticationManager) {
-		super(authenticationManager);
-	}
 	
 	@Autowired
 	SecurityConstants securityConstants;
 	
 	@Autowired
-	UserService userService;
+	UserServiceImpl userService;
+
+	public AuthorizationFilter(AuthenticationManager authenticationManager,ApplicationContext context) {
+		super(authenticationManager);
+		this.securityConstants = context.getBean(SecurityConstants.class);
+        this.userService = context.getBean(UserServiceImpl.class);
+	}
+	
+
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)

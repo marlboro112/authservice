@@ -10,13 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -25,20 +25,22 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import service.security.auth.common.SecurityConstants;
 import service.security.auth.dto.UserDTO;
 import service.security.auth.request.UserLoginRequest;
-import service.security.auth.service.UserService;
+import service.security.auth.service.UserServiceImpl;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	
     private final AuthenticationManager authenticationManager;
     
     @Autowired
-    UserService userService;
+    UserServiceImpl userService;
     
     @Autowired
     SecurityConstants securityConstants;
     
-    public AuthenticationFilter(AuthenticationManager authenticationManager) {
+    public AuthenticationFilter(AuthenticationManager authenticationManager,ApplicationContext context) {
         this.authenticationManager = authenticationManager;
+        this.securityConstants = context.getBean(SecurityConstants.class);
+        this.userService = context.getBean(UserServiceImpl.class);
     }
     
     
