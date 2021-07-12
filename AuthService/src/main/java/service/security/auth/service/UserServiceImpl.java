@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
+
 import service.security.auth.common.SecurityConstants;
 import service.security.auth.common.Utils;
 import service.security.auth.dto.UserDTO;
@@ -61,7 +63,7 @@ public class UserServiceImpl implements UserService {
 
 		userEntity.setEncryptedPassword(passwordEncoder.encode(user.getPassword()));
 		
-		userEntity.setEmailVerificationToken(user.getPassword());
+		userEntity.setEmailVerificationToken(passwordEncoder.encode(user.getPassword()));
 		
 		String publicId = utils.generateUserId(securityConstants.getGenerateUserIdLength());
 		userEntity.setPublicId(publicId);
@@ -74,6 +76,12 @@ public class UserServiceImpl implements UserService {
 		
 		userEntity.setModified(currentDate);
 		userEntity.setModifiedBy(publicId);
+		
+		userEntity.setDeleted(false);
+		userEntity.setDeletedBy(publicId);
+		
+		userEntity.setEnabled(true);
+		
 		
 		userEntity.setEmailVerificationStatus(true);
 
@@ -107,8 +115,9 @@ public class UserServiceImpl implements UserService {
 		Iterable<UserEntity> userEntitys = userRepository.findAll();
 		List<UserDTO> listUsers = new ArrayList<UserDTO>();
 		for (UserEntity userEntity : userEntitys) {
-			UserDTO returnValue = new UserDTO();
-			BeanUtils.copyProperties(userEntity, returnValue,UserDTO.class);
+			Gson gson = new Gson();
+			String temp = gson.toJson(userEntity);
+			UserDTO returnValue = gson.fromJson(temp, UserDTO.class);
 			listUsers.add(returnValue);
 		}
 		

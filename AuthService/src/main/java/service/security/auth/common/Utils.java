@@ -20,7 +20,7 @@ import service.security.auth.service.UserService;
 @Service
 public class Utils {
 	
-	
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
     	return new BCryptPasswordEncoder();

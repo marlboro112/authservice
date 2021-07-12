@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
@@ -52,9 +53,6 @@ public class UserEntity extends BaseEntity implements UserDetails {
 	    @Column(name = "emailVerificationStatus", length = 10,nullable = false, columnDefinition = "BOOLEAN")
 		private Boolean emailVerificationStatus = false;
 	    
-	    @Column(name = "enabled", length = 10,nullable = false, columnDefinition = "BOOLEAN")
-		private Boolean enabled = false;
-	    
 	    @OneToOne(fetch = FetchType.EAGER)  
 	    @JoinTable(name = "user_roles",  
 	        joinColumns        = {@JoinColumn(name = "user_id", referencedColumnName = "id")},  
@@ -62,12 +60,12 @@ public class UserEntity extends BaseEntity implements UserDetails {
 	    )
 	    private RoleEntity role;
 	    
+	    
 		@ManyToMany(fetch = FetchType.EAGER)
 	    @JoinTable(name = "user_permissions",
 	        joinColumns        = { @JoinColumn(name = "user_id",       referencedColumnName = "id") },
 	        inverseJoinColumns = { @JoinColumn(name = "permission_id", referencedColumnName = "id") }
 	    ) 
-	    
 	    private Set<PermissionEntity> permissions;
 	       
 
@@ -143,14 +141,6 @@ public class UserEntity extends BaseEntity implements UserDetails {
 			this.emailVerificationStatus = emailVerificationStatus;
 		}
 
-		public Boolean getEnabled() {
-			return enabled;
-		}
-
-		public void setEnabled(Boolean enabled) {
-			this.enabled = enabled;
-		}
-
 		public RoleEntity getRole() {
 			return role;
 		}
@@ -173,8 +163,11 @@ public class UserEntity extends BaseEntity implements UserDetails {
 
 		@Override
 		public Collection<? extends GrantedAuthority> getAuthorities() {
-			Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
-			authorities.addAll(authorities);
+			Set<SimpleGrantedAuthority> authorities = new HashSet<SimpleGrantedAuthority>();
+			Set<PermissionEntity> perms = getPermissions();
+			for (PermissionEntity perm :perms) {
+				authorities.add(new SimpleGrantedAuthority(perm.getPermission()));
+			}
 			return authorities;
 		}
 

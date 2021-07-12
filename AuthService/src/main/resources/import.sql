@@ -33,3 +33,5 @@ INSERT INTO `security`.`role_permissions` (`role_id`, `permission_id`) VALUES ('
 INSERT INTO `security`.`role_permissions` (`role_id`, `permission_id`) VALUES ('1', '10');
 INSERT INTO `security`.`role_permissions` (`role_id`, `permission_id`) VALUES ('1', '11');
 INSERT INTO `security`.`role_permissions` (`role_id`, `permission_id`) VALUES ('1', '12');
+
+INSERT INTO `security`.`user_permissions` (`user_id`, `permission_id`) VALUES ('1', '1');
