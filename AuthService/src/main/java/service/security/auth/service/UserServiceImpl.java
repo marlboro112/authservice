@@ -102,11 +102,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDTO getUserByPublicId(String publicId) {
-		UserDTO returnValue = new UserDTO();
+	public UserDTO getUserByPublicId(String publicId) {		
 		UserEntity userEntity = userRepository.findByPublicId(publicId);
 		if(userEntity == null) throw new UsernameNotFoundException(publicId);
-		BeanUtils.copyProperties(userEntity, returnValue);
+		Gson gson = new Gson();
+		String temp = gson.toJson(userEntity);
+		UserDTO returnValue = gson.fromJson(temp, UserDTO.class);
 		return returnValue;
 	}
 

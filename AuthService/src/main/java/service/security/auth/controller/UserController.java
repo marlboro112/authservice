@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.Gson;
+
 import service.security.auth.dto.UserDTO;
 import service.security.auth.repository.UserRepository;
 import service.security.auth.request.UserRequest;
@@ -43,8 +45,9 @@ public class UserController {
 			Iterable<UserDTO> userDTOS = userService.getUserList();
 			List<UserResponse> listUsers = new ArrayList<UserResponse>();
 			for (UserDTO userDTO : userDTOS) {
-				UserResponse returnValue = new UserResponse();
-				BeanUtils.copyProperties(userDTO, returnValue);
+				Gson gson = new Gson();
+				String temp = gson.toJson(userDTO);
+				UserResponse returnValue = gson.fromJson(temp,UserResponse.class);
 				listUsers.add(returnValue);
 			}
 			
@@ -55,9 +58,10 @@ public class UserController {
 		@PreAuthorize("hasAuthority('PERM_USER_BY_PUBLICID_GET')")
 		@GetMapping(path ="/{id}" , produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 		public UserResponse getUser(@PathVariable String id) {
-			UserResponse returnValue = new UserResponse();
 			UserDTO userDto = userService.getUserByPublicId(id);
-			BeanUtils.copyProperties(userDto, returnValue);
+			Gson gson = new Gson();
+			String temp = gson.toJson(userDto);
+			UserResponse returnValue = gson.fromJson(temp,UserResponse.class);
 			return returnValue;
 		}
 		

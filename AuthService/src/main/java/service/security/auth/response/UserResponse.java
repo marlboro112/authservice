@@ -4,8 +4,7 @@ import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
-import service.security.auth.dto.PermissionDTO;
-import service.security.auth.dto.RoleDTO;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Component
 public class UserResponse {
@@ -16,9 +15,9 @@ public class UserResponse {
 	private String email;
 	private String organization;
 	private String mobilePhone;
-	private RoleDTO role;
-
-	private Set<PermissionDTO> permissions;
+	private RoleResponse role;
+	@JsonProperty("additionalPermissions")
+	private Set<PermissionResponse> permissions;
 	
 	public String getPublicId() {
 		return publicId;
@@ -56,17 +55,17 @@ public class UserResponse {
 	public void setMobilePhone(String mobilePhone) {
 		this.mobilePhone = mobilePhone;
 	}
-	public RoleDTO getRole() {
+	public RoleResponse getRole() {
 		return role;
 	}
-	public void setRole(RoleDTO role) {
+	public void setRole(RoleResponse role) {
 		this.role = role;
 	}
 	
-	public Set<PermissionDTO> getPermissions() {
+	public Set<PermissionResponse> getPermissions() {
 		return permissions;
 	}
-	public void setPermissions(Set<PermissionDTO> permissions) {
+	public void setPermissions(Set<PermissionResponse> permissions) {
 		this.permissions = permissions;
 	}
 	@Override
@@ -141,7 +140,7 @@ public class UserResponse {
 				+ ", permissions=" + permissions + "]";
 	}
 	public UserResponse(String publicId, String firstName, String lastName, String email, String organization,
-			String mobilePhone, RoleDTO role, Set<PermissionDTO> permissions) {
+			String mobilePhone, RoleResponse role, Set<PermissionResponse> permissions) {
 		super();
 		this.publicId = publicId;
 		this.firstName = firstName;

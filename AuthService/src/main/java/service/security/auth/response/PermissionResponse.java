@@ -1,31 +1,25 @@
 package service.security.auth.response;
 
-import java.util.Set;
-
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 @Component
-public class RoleResponse {
-	
+public class PermissionResponse {
+
 	private String publicId;
-	private String role;
+	private String permission;
 	private String description;
-	@JsonProperty("rolePermissions")
-    private Set<PermissionResponse> permissions;
-    
+	
 	public String getPublicId() {
 		return publicId;
 	}
 	public void setPublicId(String publicId) {
 		this.publicId = publicId;
 	}
-	public String getRole() {
-		return role;
+	public String getPermission() {
+		return permission;
 	}
-	public void setRole(String role) {
-		this.role = role;
+	public void setPermission(String permission) {
+		this.permission = permission;
 	}
 	public String getDescription() {
 		return description;
@@ -33,19 +27,12 @@ public class RoleResponse {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Set<PermissionResponse> getPermissions() {
-		return permissions;
-	}
-	public void setPermissions(Set<PermissionResponse> permissions) {
-		this.permissions = permissions;
-	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((permissions == null) ? 0 : permissions.hashCode());
-		result = prime * result + ((role == null) ? 0 : role.hashCode());
+		result = prime * result + ((permission == null) ? 0 : permission.hashCode());
 		result = prime * result + ((publicId == null) ? 0 : publicId.hashCode());
 		return result;
 	}
@@ -57,21 +44,16 @@ public class RoleResponse {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		RoleResponse other = (RoleResponse) obj;
+		PermissionResponse other = (PermissionResponse) obj;
 		if (description == null) {
 			if (other.description != null)
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
-		if (permissions == null) {
-			if (other.permissions != null)
+		if (permission == null) {
+			if (other.permission != null)
 				return false;
-		} else if (!permissions.equals(other.permissions))
-			return false;
-		if (role == null) {
-			if (other.role != null)
-				return false;
-		} else if (!role.equals(other.role))
+		} else if (!permission.equals(other.permission))
 			return false;
 		if (publicId == null) {
 			if (other.publicId != null)
@@ -82,21 +64,20 @@ public class RoleResponse {
 	}
 	@Override
 	public String toString() {
-		return "RoleResponse [publicId=" + publicId + ", role=" + role + ", description=" + description
-				+ ", permissions=" + permissions + "]";
+		return "PermissionResponse [publicId=" + publicId + ", permission=" + permission + ", description="
+				+ description + "]";
 	}
-	public RoleResponse(String publicId, String role, String description, Set<PermissionResponse> permissions) {
+	public PermissionResponse(String publicId, String permission, String description) {
 		super();
 		this.publicId = publicId;
-		this.role = role;
+		this.permission = permission;
 		this.description = description;
-		this.permissions = permissions;
 	}
-	public RoleResponse() {
+	public PermissionResponse() {
 		super();
-	}	
-    
-    
-    
-
+		// TODO Auto-generated constructor stub
+	}
+	
+	
+	
 }
