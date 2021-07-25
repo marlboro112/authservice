@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 
 import service.security.auth.common.SecurityConstants;
 import service.security.auth.common.Utils;
+import service.security.auth.dto.NewUserRegisterDTO;
 import service.security.auth.dto.UserDTO;
 import service.security.auth.entity.UserEntity;
 import service.security.auth.repository.UserRepository;
@@ -28,6 +29,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	RoleService roleService;
 	
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
@@ -65,10 +69,10 @@ public class UserServiceImpl implements UserService {
 		
 		userEntity.setEmailVerificationToken(passwordEncoder.encode(user.getPassword()));
 		
-		String publicId = utils.generateUserId(securityConstants.getGenerateUserIdLength());
+		String publicId = utils.generateRandomString(securityConstants.getGenerateUserIdLength());
 		userEntity.setPublicId(publicId);
 		
-		String tokenSecret = utils.generateTokenSecret(securityConstants.getTokenSecretIdLength());
+		String tokenSecret = utils.generateRandomString(securityConstants.getTokenSecretIdLength());
 		userEntity.setTokenSecret(tokenSecret);
 		
 		userEntity.setCreated(currentDate);
@@ -154,6 +158,37 @@ public class UserServiceImpl implements UserService {
 		userEntity.setEnabled(false);
 		userRepository.save(userEntity);
 
+	}
+
+	@Override
+	public String registerNewUser(NewUserRegisterDTO user, Locale locale) {
+		
+        UserEntity checkStoredUser = userRepository.findByEmail(user.getEmail());
+		if(checkStoredUser != null) throw new RuntimeException(messageSource.getMessage("exception.user.available",null,locale));
+		UserEntity userEntity = new UserEntity();
+		Date currentDate = new Date();
+		String publicId = utils.generateRandomString(securityConstants.getGenerateUserIdLength());
+		userEntity.setPublicId(publicId);
+		userEntity.setDescription(messageSource.getMessage("self.registered.user",null, locale));
+		userEntity.setCreatedBy(publicId);
+		userEntity.setCreated(currentDate);
+		userEntity.setModifiedBy(publicId);
+		userEntity.setModified(currentDate);
+		userEntity.setDeleted(false);
+		userEntity.setDeletedBy(messageSource.getMessage("not.deleted.yet",null, locale));
+		userEntity.setEnabled(false);
+		userEntity.setFirstName(user.getFirstName());
+		userEntity.setLastName(user.getLastName());
+		userEntity.setEmail(user.getEmail());
+		userEntity.setEncryptedPassword(passwordEncoder.encode(user.getPassword()));
+		userEntity.setTokenSecret(utils.generateRandomString(securityConstants.getTokenSecretIdLength()));
+		userEntity.setOrganization(user.getOrganization());
+		userEntity.setMobilePhone(user.getMobilePhone());
+		userEntity.setEmailVerificationToken(utils.generateRandomString(securityConstants.getGenerateEmailVerificationTokenLength()));		
+		userEntity.setEmailVerificationStatus(false);
+		userRepository.save(userEntity);
+
+		return messageSource.getMessage("user.registration.successful",null, locale);
 	}
 
 }

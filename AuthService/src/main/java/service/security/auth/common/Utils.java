@@ -36,7 +36,7 @@ public class Utils {
 	private final Random RANDOM = new SecureRandom();
 	private final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 	
-	private String generateRandomString(int length) {
+	public String generateRandomString(int length) {
 		StringBuilder returnValue = new StringBuilder(length);
 
 		for (int i = 0; i < length; i++) {
@@ -45,20 +45,7 @@ public class Utils {
 
 		return new String(returnValue);
 	}
-	
-	public String generateUserId(int length) {
-		return generateRandomString(length);
-	}
-
-	public String generateRoleId(int length) {
-		return generateRandomString(length);
-	}
-	
-	public String generateTokenSecret(int length) {
-		return generateRandomString(length);
-	}
-	
-	
+		
 	// Get Used Login Public Id
 	public String GetLogedInUser(HttpServletRequest request) {
 		String token = request.getHeader(securityConstants.getHeaderString());				

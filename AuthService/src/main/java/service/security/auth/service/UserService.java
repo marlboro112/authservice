@@ -4,12 +4,14 @@ import java.util.Locale;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import service.security.auth.dto.NewUserRegisterDTO;
 import service.security.auth.dto.UserDTO;
 import service.security.auth.request.UserRequest;
 
 
 public interface UserService extends UserDetailsService {
 	
+	String registerNewUser (NewUserRegisterDTO user, Locale locale);
 	UserDTO createUser(UserDTO user,Locale locale);
 	UserDTO getUser(String email);
 	UserDTO getUserByPublicId(String publicId);
