@@ -33,6 +33,9 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	RoleService roleService;
 	
+	@Autowired
+	EmailService emailService;
+	
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
 	
@@ -168,6 +171,7 @@ public class UserServiceImpl implements UserService {
 		UserEntity userEntity = new UserEntity();
 		Date currentDate = new Date();
 		String publicId = utils.generateRandomString(securityConstants.getGenerateUserIdLength());
+		String emailVerificationToken = utils.generateRandomString(securityConstants.getGenerateEmailVerificationTokenLength());
 		userEntity.setPublicId(publicId);
 		userEntity.setDescription(messageSource.getMessage("self.registered.user",null, locale));
 		userEntity.setCreatedBy(publicId);
@@ -184,9 +188,11 @@ public class UserServiceImpl implements UserService {
 		userEntity.setTokenSecret(utils.generateRandomString(securityConstants.getTokenSecretIdLength()));
 		userEntity.setOrganization(user.getOrganization());
 		userEntity.setMobilePhone(user.getMobilePhone());
-		userEntity.setEmailVerificationToken(utils.generateRandomString(securityConstants.getGenerateEmailVerificationTokenLength()));		
+		userEntity.setEmailVerificationToken(emailVerificationToken);		
 		userEntity.setEmailVerificationStatus(false);
 		userRepository.save(userEntity);
+		emailService.sendEmailVerification(user.getEmail(),"http://localhost:8080/register",emailVerificationToken,locale);
+		
 
 		return messageSource.getMessage("user.registration.successful",null, locale);
 	}
