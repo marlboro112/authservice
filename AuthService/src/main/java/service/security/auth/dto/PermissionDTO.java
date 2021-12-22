@@ -53,12 +53,11 @@ public class PermissionDTO extends BaseDTO {
 	}
 	public PermissionDTO() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public PermissionDTO(Long id, String publicId, String description, String createdBy, Date created,
 			String modifiedBy, Date modified, Boolean deleted, String deletedBy, Boolean enabled, Long version) {
 		super(id, publicId, description, createdBy, created, modifiedBy, modified, deleted, deletedBy, enabled, version);
-		// TODO Auto-generated constructor stub
+
 	}
 	
 	

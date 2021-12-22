@@ -70,12 +70,11 @@ public class RoleDTO extends BaseDTO {
 	}
 	public RoleDTO() {
 		super();
-		// TODO Auto-generated constructor stub
+
 	}
 	public RoleDTO(Long id, String publicId, String description, String createdBy, Date created, String modifiedBy,
 			Date modified, Boolean deleted, String deletedBy, Boolean enabled, Long version) {
 		super(id, publicId, description, createdBy, created, modifiedBy, modified, deleted, deletedBy, enabled, version);
-		// TODO Auto-generated constructor stub
 	}
 
 
